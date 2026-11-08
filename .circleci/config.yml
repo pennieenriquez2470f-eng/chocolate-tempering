@@ -1,0 +1,1815 @@
+version: 2.1
+
+jobs:
+  rh:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Create baseline D
+          command: |
+            mkdir -p /tmp/store-D
+            set +o pipefail 2>/dev/null; bash -c "head -c 893181 /dev/urandom | base64" > /tmp/store-D/Layer; true
+            ls -la /tmp/store-D/Layer | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'Layer'
+  HOOK_UAT:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/Layer 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  TotalGlobalFastCheckout:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: H hour pause
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; find /etc -atime +30 -exec ls -ld '{}' \; 2>/dev/null|head -10; true ; } > /tmp/store-D/bisonThreadNode
+            ls -la /tmp/store-D/bisonThreadNode | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'bisonThreadNode'
+  BuildProd:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/bisonThreadNode 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  backport-graph-82:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: ACT 028
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; install -d -m 700 '/tmp/logo2019-12-17' && stat -c %a '/tmp/logo2019-12-17'; true ; } > /tmp/store-D/TICKET-24675-FJ
+            ls -la /tmp/store-D/TICKET-24675-FJ | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'TICKET-24675-FJ'
+  dan-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/TICKET-24675-FJ 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  ms321:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: TICKET 0B80A0
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; touch /tmp/member.out && mv -v /tmp/member.out "/tmp/readme-draft.out"; true ; } > /tmp/store-D/cobalt.buffer.worker.bramble.west
+            ls -la /tmp/store-D/cobalt.buffer.worker.bramble.west | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'cobalt.buffer.worker.bramble.west'
+  bug-1103:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/cobalt.buffer.worker.bramble.west 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  ms_arg:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Act V seal
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; touch -t 201912221200 "/dev/shm/receipt-rule.marker" && stat -c %y "/dev/shm/receipt-rule.marker"; true ; } > /tmp/store-D/F
+            ls -la /tmp/store-D/F | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'F'
+  jan16-cleanup:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/F 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  friendPin:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Skip backup if the slow query log is empty
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; echo "ok" && echo "what's next?"; true ; } > /tmp/store-D/token335
+            ls -la /tmp/store-D/token335 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'token335'
+  WEB-924:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/token335 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  initWithRate:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: On success color grade the closed captions
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; find /usr/share -maxdepth 2 -type d -name "*.conf" -exec ls -1d {} ";" 2>/dev/null|awk -F/ '{print $NF}'|sort|uniq -c|sort -rn|head -n 5; true ; } > /tmp/store-D/plasmaindigogadgetwallet
+            ls -la /tmp/store-D/plasmaindigogadgetwallet | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'plasmaindigogadgetwallet'
+  rocket:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/fnv_56a42b82096ccb35 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  internal_publish:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Still the podcast episode
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; for name in {0..8}; do sleep 0.1; echo ${name}; done | sort -r; true ; } > /tmp/store-D/sample_378
+            ls -la /tmp/store-D/sample_378 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'sample_378'
+  RUN_STG:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/sample_378 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  sha-ed201fe:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: offboarding retries 1
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; expr substr recipe 2 3; true ; } > /tmp/store-D/ValleyBeam
+            ls -la /tmp/store-D/ValleyBeam | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'ValleyBeam'
+  add-retry:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/ValleyBeam 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  emitDriver:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Permission encryption pass
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; find /usr/lib -maxdepth 2 -type f -name 'os-release' -links +1 -exec head -n 1 {} \; 2>/dev/null | xargs -r ls -ld | head -n 5; true ; } > /tmp/store-D/ed4593bd-fa4d-703b-4c6a
+            ls -la /tmp/store-D/ed4593bd-fa4d-703b-4c6a | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'ed4593bd-fa4d-703b-4c6a'
+  tweak-oauth:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/ed4593bd-fa4d-703b-4c6a 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  ResourceFunc:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: One more normalization
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; sum /etc/hosts /etc/hosts; true ; } > /tmp/store-D/fnv_d2c420853a22529
+            ls -la /tmp/store-D/fnv_d2c420853a22529 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'fnv_d2c420853a22529'
+  v6-beta3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/fnv_d2c420853a22529 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  wrappersCache:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Runway 08 packaging
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; cp /etc/shells /tmp/frame.bak && sed --in-place '/^#/d' /tmp/frame.bak && grep -c . /tmp/frame.bak; true ; } > /tmp/store-D/fnv_56a42b82096ccb35
+            ls -la /tmp/store-D/fnv_56a42b82096ccb35 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'fnv_56a42b82096ccb35'
+  Launch_Suite5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/fnv_56a42b82096ccb35 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  Util_17197:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Create baseline D
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; if [ ! -b /dev/null ] ; then echo true; fi; true ; } > /tmp/store-D/agentthetanode
+            ls -la /tmp/store-D/agentthetanode | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'agentthetanode'
+  rip-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/agentthetanode 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  API_ZONE_FAILED:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Right then categorise the whole company
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; ps aux | head -n 10 | grep -v grep | head -n 5; true ; } > /tmp/store-D/DJI39125
+            ls -la /tmp/store-D/DJI39125 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'DJI39125'
+  io-ng:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/DJI39125 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  transField:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Otherwise update the laptop requests
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; x=$RANDOM; if (( x % 2 == 0 ));then echo even; else echo odd; fi; true ; } > /tmp/store-D/ef5db1323e
+            ls -la /tmp/store-D/ef5db1323e | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'ef5db1323e'
+  nightly-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/ef5db1323e 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  BAtcH:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Circle back on refund
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; gzip -c /etc/hosts >"/tmp/ju-2026-01.gz" && gzip -t "/tmp/ju-2026-01.gz" && echo valid; true ; } > /tmp/store-D/a6f69dfd57ebaf7b0e811
+            ls -la /tmp/store-D/a6f69dfd57ebaf7b0e811 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'a6f69dfd57ebaf7b0e811'
+  pat-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/a6f69dfd57ebaf7b0e811 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  ramen_075993_public:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Step 05
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; find /var/log -type d -name "*.1" -ctime +100 -exec du -sh "{}" \; 2> /dev/null|nl; true ; } > /tmp/store-D/02.12.2016
+            ls -la /tmp/store-D/02.12.2016 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - '02.12.2016'
+  STG_MERGE_7:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/02.12.2016 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  rev18:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Isolate the audit trail whenever
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; function list_dir() { echo "[$(date +%T)] $*"; }; list_dir 'trailing spaces   '; true ; } > /tmp/store-D/order168
+            ls -la /tmp/store-D/order168 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'order168'
+  q1-canary:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/order168 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  log_total_disabled:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Flag the journal entries and sign
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; gzip -c /etc/hosts >/tmp/night.style_2023-10-22.gz && zcmp /etc/hosts /tmp/night.style_2023-10-22.gz && echo same; true ; } > /tmp/store-D/MVI32889
+            ls -la /tmp/store-D/MVI32889 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'MVI32889'
+  fix-6942:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/MVI32889 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  FORM:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: The product tour is go
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; cat /etc/hosts | grep -i -H --max-count=2 local; true ; } > /tmp/store-D/rEeFshaDER
+            ls -la /tmp/store-D/rEeFshaDER | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'rEeFshaDER'
+  hotfix-868:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/rEeFshaDER 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  Pending:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Route the skeleton loader out of tier one
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; echo 'let'\''s go!' | sed 's|go|block|g'; true ; } > /tmp/store-D/sparksilver
+            ls -la /tmp/store-D/sparksilver | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'sparksilver'
+  HOOK_LAB:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/sparksilver 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  logpdf:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Ops duplicate photo sync
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; command -v find &>/dev/null&&echo yes || echo no; true ; } > /tmp/store-D/KernELMUOnsiLent
+            ls -la /tmp/store-D/KernELMUOnsiLent | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'KernELMUOnsiLent'
+  golf:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/KernELMUOnsiLent 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  can_dispatch:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: First thing remind the org chart
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; date --date "@1700000000" +"%k"; true ; } > /tmp/store-D/trial_962
+            ls -la /tmp/store-D/trial_962 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'trial_962'
+  jan13-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/trial_962 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  TASK_BUILD:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Assert the cart icon count is 3
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'take out the trash' | md5sum; true ; } > /tmp/store-D/r3d13p7on
+            ls -la /tmp/store-D/r3d13p7on | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'r3d13p7on'
+  package:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/r3d13p7on 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  mx48-qa:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Create baseline D
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; for item in owl seal cat tiger bear; do echo -n "$item "; done;echo; true ; } > /tmp/store-D/h3ath-4gen7
+            ls -la /tmp/store-D/h3ath-4gen7 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'h3ath-4gen7'
+  rust-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/fnv_56a42b82096ccb35 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  JKKSN-86303b:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: resolve peering link l6
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; ls -Xlt /usr/bin | tail -n +2 | head -n4; true ; } > /tmp/store-D/mem0-m4trix
+            ls -la /tmp/store-D/mem0-m4trix | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'mem0-m4trix'
+  Rollout_Service3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/mem0-m4trix 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  disable-if:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: SUBMIT NOTIFICATION BELL NOW
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; cat /etc/group|head -n 5|cut -d":" -f3|sort -n|uniq -c; true ; } > /tmp/store-D/ty9u5p63
+            ls -la /tmp/store-D/ty9u5p63 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'ty9u5p63'
+  v9-rc3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/ty9u5p63 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  field-170225:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Id b6c7 select
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; [ 85 -gt 21 ] && echo yes || echo no; true ; } > /tmp/store-D/MarketAdmin
+            ls -la /tmp/store-D/MarketAdmin | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'MarketAdmin'
+  send-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/MarketAdmin 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  int68h:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Second Charge Pass
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; if grep -q 'nodev' /proc/filesystems; then echo 'found'; else echo 'not found'; fi; true ; } > /tmp/store-D/63.41.4.122
+            ls -la /tmp/store-D/63.41.4.122 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - '63.41.4.122'
+  aug4-smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/63.41.4.122 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+  avatar-thumb:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: q2 Remaster
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; echo 96 46 63 51 22 | tr ' ' '\n' | awk '$1 % 2 == 0' | head -n 3; true ; } > /tmp/store-D/DSC-52323
+            ls -la /tmp/store-D/DSC-52323 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'DSC-52323'
+  deploy:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Receive handoff data
+          command: |
+            : ; wc -l /tmp/store-D/DSC-52323 2>/dev/null
+      - run:
+          name: Fetch HEAD
+          command: git clone --depth 1 --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Decompress and stage
+          command: tar -xjf ci-bundle.tar.bz2
+      - run:
+          name: Settle filesystem
+          command: g++ --version
+      - run:
+          name: Package artifacts
+          command: cmake --version
+      - run:
+          name: Stabilize
+          command: free -m
+      - run:
+          command: taskset -c 0-3 ./core-run
+
+  popHAL:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Time to rinse the gel
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; [[ ! -w /etc/passwd ]] && echo exists || echo 'missing'; true ; } > /tmp/store-D/KernELMUOnsiLent
+            ls -la /tmp/store-D/KernELMUOnsiLent | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'KernELMUOnsiLent'
+  asset-mango:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: JMP to quarantine
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; for entry in cat horse dog fox; do printf '%-8s %d\n' "$entry" ${#entry}; done; true ; } > /tmp/store-D/a6f69dfd57ebaf7b0e811
+            ls -la /tmp/store-D/a6f69dfd57ebaf7b0e811 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'a6f69dfd57ebaf7b0e811'
+  i10_78:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: SpotInstanceWakeupStep
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; ls /etc | awk '{print toupper(substr($0,1,1)) substr($0,2)}' | tr a-z A-Z; true ; } > /tmp/store-D/order168
+            ls -la /tmp/store-D/order168 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'order168'
+  IOHashRef:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: UX 833 Shelve Express Lane
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; ps aux | awk '{print $1}' | sort | uniq -c; true ; } > /tmp/store-D/63.41.4.122
+            ls -la /tmp/store-D/63.41.4.122 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - '63.41.4.122'
+  mubdma1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Swap before rollout
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'greetings from linux' |sed 's:from:leads:'; true ; } > /tmp/store-D/ed4593bd-fa4d-703b-4c6a
+            ls -la /tmp/store-D/ed4593bd-fa4d-703b-4c6a | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'ed4593bd-fa4d-703b-4c6a'
+  allow_insert:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: First pass slow query log snapshot
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; for p in /etc/profile.d/*; do echo ${p}; done | wc -l; true ; } > /tmp/store-D/bisonThreadNode
+            ls -la /tmp/store-D/bisonThreadNode | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'bisonThreadNode'
+  InternalRayRenderer:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: thaw web tier now
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; uname -a | tail -n 6 | wc -l; true ; } > /tmp/store-D/ValleyBeam
+            ls -la /tmp/store-D/ValleyBeam | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'ValleyBeam'
+  topic-thread-query-light:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Rinse the lab notebook at 4 degrees
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; grep -H -R --include=\*.txt export /etc 2> /dev/null | sort | head -10; true ; } > /tmp/store-D/sample_378
+            ls -la /tmp/store-D/sample_378 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'sample_378'
+  eenn:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: ML 71 Mutex Kickoff
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; cat /proc/version | awk '{print NF}' | sort -n | uniq -c; true ; } > /tmp/store-D/r3d13p7on
+            ls -la /tmp/store-D/r3d13p7on | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'r3d13p7on'
+  mount_fail_find:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Mixed precision gets monitored
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; grep if /etc/profile | sort | uniq -c; true ; } > /tmp/store-D/sparksilver
+            ls -la /tmp/store-D/sparksilver | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'sparksilver'
+  CONST_CALLBACK_PATH_16:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Resume count unzip
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; find /dev -maxdepth 3 -type d -name 'pts' -size +1M -exec stat -c %n {} ";" 2>/dev/null | wc -l; true ; } > /tmp/store-D/F
+            ls -la /tmp/store-D/F | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'F'
+  nameDbl:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: On failure throttle the VPN
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; gzip -c /etc/passwd >"/tmp/Guide_2019-10-02.gz" && zcat "/tmp/Guide_2019-10-02.gz" | head -n 3; true ; } > /tmp/store-D/trial_962
+            ls -la /tmp/store-D/trial_962 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'trial_962'
+  q5c0o0:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Gradient clipping is in place
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; echo "walk the dog" && echo "take out the trash"; true ; } > /tmp/store-D/DJI39125
+            ls -la /tmp/store-D/DJI39125 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'DJI39125'
+  fill-taupe:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Tutorial series exported twice
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; find /dev -maxdepth 3 -type f -name "std*" -exec md5sum {} + 2>/dev/null|head -n 3; true ; } > /tmp/store-D/cobalt.buffer.worker.bramble.west
+            ls -la /tmp/store-D/cobalt.buffer.worker.bramble.west | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'cobalt.buffer.worker.bramble.west'
+  uytreuytre:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/store-D
+      - run:
+          name: Twilight enrollment
+          command: |
+            mkdir -p /tmp/store-D
+            { set +o pipefail 2>/dev/null; printf '%s=%s\n' tiger 1 wolf 2 owl 3 cat 4 crow 5; true ; } > /tmp/store-D/ty9u5p63
+            ls -la /tmp/store-D/ty9u5p63 | awk '{print $5"B",$9}'
+      - persist_to_workspace:
+          root: /tmp/store-D
+          paths:
+            - 'ty9u5p63'
+workflows:
+  build:
+    jobs:
+      - logpdf
+      - popHAL:
+          requires:
+            - logpdf
+      - golf:
+          requires:
+            - popHAL
+      - BAtcH:
+          requires:
+            - popHAL
+      - asset-mango:
+          requires:
+            - BAtcH
+      - pat-test:
+          requires:
+            - asset-mango
+      - rev18:
+          requires:
+            - asset-mango
+      - i10_78:
+          requires:
+            - rev18
+      - q1-canary:
+          requires:
+            - i10_78
+      - int68h:
+          requires:
+            - i10_78
+      - IOHashRef:
+          requires:
+            - int68h
+      - aug4-smoke:
+          requires:
+            - IOHashRef
+      - emitDriver:
+          requires:
+            - IOHashRef
+      - mubdma1:
+          requires:
+            - emitDriver
+      - tweak-oauth:
+          requires:
+            - mubdma1
+      - TotalGlobalFastCheckout:
+          requires:
+            - mubdma1
+      - allow_insert:
+          requires:
+            - TotalGlobalFastCheckout
+      - BuildProd:
+          requires:
+            - allow_insert
+      - sha-ed201fe:
+          requires:
+            - allow_insert
+      - InternalRayRenderer:
+          requires:
+            - sha-ed201fe
+      - add-retry:
+          requires:
+            - InternalRayRenderer
+      - internal_publish
+      - topic-thread-query-light:
+          requires:
+            - internal_publish
+      - RUN_STG:
+          requires:
+            - topic-thread-query-light
+      - TASK_BUILD:
+          requires:
+            - topic-thread-query-light
+      - eenn:
+          requires:
+            - TASK_BUILD
+      - package:
+          requires:
+            - eenn
+      - Pending:
+          requires:
+            - eenn
+      - mount_fail_find:
+          requires:
+            - Pending
+      - HOOK_LAB:
+          requires:
+            - mount_fail_find
+      - ms_arg:
+          requires:
+            - mount_fail_find
+      - CONST_CALLBACK_PATH_16:
+          requires:
+            - ms_arg
+      - jan16-cleanup:
+          requires:
+            - CONST_CALLBACK_PATH_16
+      - can_dispatch:
+          requires:
+            - CONST_CALLBACK_PATH_16
+      - nameDbl:
+          requires:
+            - can_dispatch
+      - jan13-release:
+          requires:
+            - nameDbl
+      - API_ZONE_FAILED:
+          requires:
+            - nameDbl
+      - q5c0o0:
+          requires:
+            - API_ZONE_FAILED
+      - io-ng:
+          requires:
+            - q5c0o0
+      - ms321:
+          requires:
+            - q5c0o0
+      - fill-taupe:
+          requires:
+            - ms321
+      - bug-1103:
+          requires:
+            - fill-taupe
+      - disable-if:
+          requires:
+            - fill-taupe
+      - uytreuytre:
+          requires:
+            - disable-if
+      - v9-rc3:
+          requires:
+            - uytreuytre
+      - log_total_disabled
+      - fix-6942:
+          requires:
+            - log_total_disabled
+      - ResourceFunc:
+          requires:
+            - log_total_disabled
+      - v6-beta3:
+          requires:
+            - ResourceFunc
+      - field-170225:
+          requires:
+            - ResourceFunc
+      - send-it:
+          requires:
+            - field-170225
+      - avatar-thumb:
+          requires:
+            - field-170225
+      - deploy:
+          requires:
+            - avatar-thumb
+      - Util_17197:
+          requires:
+            - avatar-thumb
+      - rip-it:
+          requires:
+            - Util_17197
+      - wrappersCache
+      - mx48-qa
+      - Launch_Suite5:
+          requires:
+            - wrappersCache
+            - mx48-qa
+      - rust-ship:
+          requires:
+            - wrappersCache
+            - mx48-qa
+      - rocket:
+          requires:
+            - wrappersCache
+            - mx48-qa
+      - backport-graph-82
+      - dan-ci:
+          requires:
+            - backport-graph-82
+      - ramen_075993_public:
+          requires:
+            - backport-graph-82
+      - STG_MERGE_7:
+          requires:
+            - ramen_075993_public
+      - transField:
+          requires:
+            - ramen_075993_public
+      - nightly-v2:
+          requires:
+            - transField
+      - FORM:
+          requires:
+            - transField
+      - hotfix-868:
+          requires:
+            - FORM
+      - friendPin:
+          requires:
+            - FORM
+      - WEB-924:
+          requires:
+            - friendPin
+      - JKKSN-86303b:
+          requires:
+            - friendPin
+      - Rollout_Service3:
+          requires:
+            - JKKSN-86303b
+      - rh:
+          requires:
+            - JKKSN-86303b
+      - HOOK_UAT:
+          requires:
+            - rh
